@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  spring-api:
+    build: .
+    image: spring-api
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/src
+    networks:
+      - spring-network
+    environment:
+      - MONGODB_DATABASE=Quote
+      - MONGODB_PORT=27017
+      - MONGODB_HOST=mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    networks:
+      - spring-network
+
+  mongo_seed:
+    image: mongo:latest
+    depends_on:
+      - mongodb
+    volumes:
+      - ./mongo-seed:/mongo-seed
+    command: >
+      sh -c "chmod +x ./mongo-seed/import.sh &&
+             /mongo-seed/import.sh"
+    networks:
+      - spring-network
+
+volumes:
+  dbdata6:
+
+networks:
+  spring-network:
+    driver: bridge

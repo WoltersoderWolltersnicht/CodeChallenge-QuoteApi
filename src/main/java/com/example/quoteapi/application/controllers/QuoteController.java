@@ -23,15 +23,15 @@ public class QuoteController {
     @Autowired
     private QuoteRepository repository;
 
-    @GetMapping("/#get-quotes")
+    @GetMapping("/get-quotes")
     GetQuotesResponse getQuotes(@RequestBody GetQuotesRequest request) {
 
         List<Quote> response = null;
 
         if( request.id != null || request.author != null){
-            response = repository.GetQuotesByIdAndAuthor(request.id, request.author);
+            response = repository.getQuotesByIdAndAuthor(request.id, request.author);
         }else{
-            response = repository.GetAllQuotes();
+            response = repository.getAllQuotes();
         }
 
         if(response == null) return new GetQuotesResponse(null, new AdviseMessage(500, "Error retrieving quotes"));

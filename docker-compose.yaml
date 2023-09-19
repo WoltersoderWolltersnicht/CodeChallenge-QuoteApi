@@ -31,8 +31,9 @@ services:
     volumes:
       - ./mongo-seed:/mongo-seed
     command: >
-      sh -c "chmod +x ./mongo-seed/import.sh &&
-             /mongo-seed/import.sh"
+      sh -c "cd mongo-seed &&
+             chmod +x ./import.sh &&
+             ./import.sh"
     networks:
       - spring-network
 
